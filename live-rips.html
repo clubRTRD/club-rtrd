@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club RTRD — Live Rips</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f0f13;--surface:#1a1a22;--surface2:#22222e;--border:#2e2e3e;
+    --text:#f0f0f5;--muted:#6b6b7e;--red:#e8223a;--green:#4fff91;--blue:#2d6be4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;color:var(--blue);text-shadow:0 0 24px rgba(45,107,228,0.4);}
+  .subtitle{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);}
+  .status{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:6px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block;}
+  .dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .dot.err{background:var(--red);}
+  .container{max-width:1200px;margin:0 auto;padding:24px 20px;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px;}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+  .stat-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;}
+  .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;}
+  .stat-val.green{color:var(--green);}
+  .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:.65rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;}
+  .b-psa{background:rgba(232,34,58,.12);color:var(--red);border:1px solid rgba(232,34,58,.3);}
+  .b-ung{background:rgba(107,107,126,.12);color:var(--muted);border:1px solid rgba(107,107,126,.25);}
+  .b-inpack{background:rgba(45,107,228,.12);color:var(--blue);border:1px solid rgba(45,107,228,.3);}
+  .b-sold{background:rgba(255,79,79,.12);color:var(--red);border:1px solid rgba(255,79,79,.3);}
+  .gb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:.9rem;background:rgba(232,34,58,.18);color:var(--red);border:1px solid rgba(232,34,58,.35);}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--text);margin-bottom:18px;text-align:center;}
+  .top-hits{margin-bottom:48px;}
+  .top-hits-cards{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-end;}
+  .avail-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--text);margin-bottom:14px;}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;align-items:start;}
+  .card{background:var(--surface2);border:1px solid transparent;border-radius:10px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:6px;box-sizing:border-box;min-width:0;}
+  .card-img-wrap{position:relative;width:50%;margin:0 auto;}
+  .card-img-wrap img{width:100%;height:auto;border-radius:6px;display:block;}
+  .card-name{font-size:1.1rem;font-weight:600;color:var(--text);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .card-set{font-size:.58rem;color:var(--muted);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .card-meta{width:100%;display:flex;justify-content:space-between;align-items:center;}
+  .card-price{font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;color:var(--text);}
+  .card-badges{width:100%;display:flex;justify-content:space-between;align-items:center;}
+  .stamp{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;}
+  .stamp-inner{transform:rotate(-25deg);border:4px solid var(--red);color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:4px;padding:4px 10px;opacity:1;white-space:nowrap;text-shadow:0 0 12px rgba(232,34,58,0.8);background:rgba(0,0,0,0.15);}
+  .empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.85rem;}
+  .refresh-note{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);text-align:center;margin-top:32px;}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr);}.top-hits-cards{gap:16px;}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">Club RTRD</div>
+    <div class="subtitle">Live Rips — inventory updates live as repacks are sold</div>
+  </div>
+  <div class="status"><span class="dot" id="dot"></span><span id="statusTxt">Loading...</span></div>
+</header>
+<div class="container">
+  <div class="stats" id="stats"></div>
+  <div class="top-hits" id="topHits"></div>
+  <div class="avail-title" id="availTitle" style="display:none;">Available Hits</div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">No repack cards found.</div>
+  <div class="refresh-note" id="refreshNote"></div>
+</div>
+
+<script>
+var SYNC_URL = 'https://rtrdclub.ngrok.pizza';
+var REFRESH_MS = 30000;
+var cards = [], repacks = [], invoices = [];
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function money(n){ return '$'+(+n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function isCardPulled(c){
+  var rp = repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
+  if(!rp||rp.status==='sold') return false;
+  return invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
+}
+function isSold(c){
+  var onPaid = invoices.some(function(inv){ return inv.status==='paid' && (inv.lineItems||[]).some(function(l){ return l.cardId===c.id; }); });
+  if(onPaid) return true;
+  var rp = repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
+  return rp && rp.status==='sold';
+}
+function glowColor(val, strong){
+  var o=strong?0.7:0.25, o2=strong?0.9:0.12;
+  if(val>=300) return {glow:'rgba(255,200,50,'+o+')',label:'#ffc832'};
+  if(val>=200) return {glow:'rgba(168,85,247,'+o+')',label:'#c084fc'};
+  if(val>=125) return {glow:'rgba(59,130,246,'+o+')',label:'#60a5fa'};
+  if(val>=50)  return {glow:'rgba(34,197,94,'+o+')',label:'#4ade80'};
+  return {glow:'rgba(100,100,120,'+o2+')',label:'#888'};
+}
+function gradeBadge(c){
+  if(c.type!=='PSA'||!c.grade) return '<span style="color:var(--muted);font-size:.73rem">-</span>';
+  return '<span class="gb">'+esc(c.grade)+'</span>';
+}
+
+function render(){
+  var rows = [];
+  repacks.forEach(function(rp){
+    (rp.cardIds||[]).forEach(function(cid){
+      var c = cards.find(function(x){ return x.id===cid; });
+      if(c) rows.push({card:c, repack:rp});
+    });
+  });
+  rows.sort(function(a,b){ return (b.card.value||0)-(a.card.value||0); });
+
+  // Stats
+  var total = rows.reduce(function(s,r){ return s+(r.card.value||0); },0);
+  var pulledRepacks = repacks.filter(function(rp){
+    return rp.status==='sold' || invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
+  }).length;
+  var remainingRepacks = repacks.length - pulledRepacks;
+  // Remaining value = only cards from unsold/uninvoiced repacks
+  var remainingValue = rows.filter(function(r){
+    return !isSold(r.card) && !isCardPulled(r.card);
+  }).reduce(function(s,r){ return s+(r.card.value||0); },0);
+  // Average value of unsold repacks
+  var unsoldRepacks = repacks.filter(function(rp){
+    return rp.status!=='sold' && !invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
+  });
+  var avgReturn = 0;
+  if(unsoldRepacks.length){
+    var totalUnsoldVal = unsoldRepacks.reduce(function(s,rp){
+      return s+(rp.cardIds||[]).reduce(function(sv,cid){
+        var c=cards.find(function(x){ return x.id===cid; }); return sv+(c?c.value||0:0);
+      },0);
+    },0);
+    avgReturn = totalUnsoldVal / unsoldRepacks.length;
+  }
+  document.getElementById('stats').innerHTML =
+    '<div class="stat"><div class="stat-lbl">Remaining Packs</div><div class="stat-val">'+remainingRepacks+'</div></div>'
+    +'<div class="stat"><div class="stat-lbl">Remaining Value</div><div class="stat-val green">'+money(remainingValue)+'</div></div>'
+    +'<div class="stat"><div class="stat-lbl">Repacks Sold</div><div class="stat-val">'+pulledRepacks+'</div></div>'
+    +'<div class="stat"><div class="stat-lbl">Avg Return</div><div class="stat-val green">'+money(avgReturn)+'</div></div>';
+
+  // Top Hits — only available cards
+  var availRows = rows.filter(function(r){ return !isCardPulled(r.card) && !isSold(r.card); });
+  var top3 = availRows.slice(0,3);
+  var topHtml = '<div class="section-title">Top Hits Available</div><div class="top-hits-cards">';
+  var order = top3.map(function(_,i){ return i; });
+  order.forEach(function(idx){
+    if(idx>=top3.length) return;
+    var c = top3[idx].card;
+    var val = c.value||0;
+    var gc = glowColor(val, true);
+    var isTop = true;
+    var imgW = 300;
+    topHtml +=
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;">'
+        +'<div style="position:relative;">'
+          +(c.imageUrl
+            ?'<img src="'+esc(c.imageUrl)+'" style="width:'+imgW+'px;height:auto;border-radius:10px;display:block;box-shadow:0 0 8px -10px '+gc.glow+',0 0 25px -10px '+gc.glow+',0 0 45px -10px '+gc.glow+';">'
+            :'<div style="width:'+imgW+'px;height:'+(isTop?380:305)+'px;background:var(--surface2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--muted);">No image</div>'
+          )
+        +'</div>'
+        +'<div style="font-size:'+(isTop?.9:.82)+'rem;font-weight:600;color:var(--text);text-align:center;max-width:'+imgW+'px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.name)+(c.grade?' \u2022 PSA '+c.grade:'')+'</div>'
+        +'<div style="font-size:'+(isTop?.92:.82)+'rem;font-weight:700;color:'+gc.label+';font-family:\'DM Mono\',monospace;">'+money(val)+'</div>'
+      +'</div>';
+  });
+  topHtml += '</div>';
+  document.getElementById('topHits').innerHTML = top3.length ? topHtml : '';
+
+  // Grid
+  var grid = document.getElementById('grid');
+  var availTitle = document.getElementById('availTitle');
+  var empty = document.getElementById('empty');
+  grid.innerHTML = '';
+  availTitle.style.display = rows.length ? 'block' : 'none';
+  empty.style.display = rows.length ? 'none' : 'block';
+
+  rows.forEach(function(row){
+    var c = row.card;
+    var sold = isSold(c);
+    var pulled = !sold && isCardPulled(c);
+    var val = c.value||0;
+    var gc = glowColor(val);
+    var div = document.createElement('div');
+    div.className = 'card';
+    if(sold) div.style.opacity = '0.4';
+    var stamp = pulled
+      ?'<div class="stamp"><div class="stamp-inner">PULLED!</div></div>'
+      :'';
+    div.innerHTML =
+      '<div class="card-img-wrap">'
+        +(c.imageUrl
+          ?'<img src="'+esc(c.imageUrl)+'" style="'+(sold||pulled?'filter:grayscale(1);':'box-shadow:0 0 14px 5px '+gc.glow+',0 0 28px 8px '+gc.glow+';')+'">'
+          :'<div style="width:100%;height:60px;background:var(--surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.6rem;'+(sold||pulled?'filter:grayscale(1);':'')+'">No image</div>'
+        )
+        +stamp
+      +'</div>'
+      +'<div class="card-badges">'
+        +'<span class="badge '+(c.type==='PSA'?'b-psa':'b-ung')+'">'+esc(c.type)+'</span>'
+        +gradeBadge(c)
+      +'</div>'
+      +'<div class="card-name">'+esc(c.name)+'</div>'
+      +'<div class="card-set">'+esc(c.set||'')+(c.cardNum?' \u00b7 #'+esc(c.cardNum):'')+'</div>'
+      +'<div class="card-meta">'
+        +'<span class="card-price">'+money(val)+'</span>'
+        +(sold||pulled?'<span class="badge b-sold">Pulled</span>':'<span class="badge b-inpack">In Pack</span>')
+      +'</div>';
+    grid.appendChild(div);
+  });
+}
+
+async function load(){
+  try{
+    var res = await fetch(SYNC_URL+'/api/collections/vault_data/records?sort=-updated&perPage=1',{signal:AbortSignal.timeout(8000)});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    var json = await res.json();
+    var items = json.items||json.records||[];
+    if(!items.length) throw new Error('No data found');
+    var data = JSON.parse(items[0].data||'{}');
+    cards = data.cards||[];
+    repacks = data.repacks||[];
+    invoices = data.invoices||[];
+    render();
+    var dot = document.getElementById('dot');
+    var txt = document.getElementById('statusTxt');
+    dot.className = 'dot ok';
+    txt.textContent = 'Live \u2014 updated '+new Date().toLocaleTimeString();
+    document.getElementById('refreshNote').textContent = 'Auto-refreshes every 30 seconds';
+  }catch(e){
+    var dot = document.getElementById('dot');
+    var txt = document.getElementById('statusTxt');
+    dot.className = 'dot err';
+    txt.textContent = 'Connection error: '+e.message;
+    document.getElementById('refreshNote').textContent = 'Retrying in 30 seconds...';
+  }
+}
+
+load();
+setInterval(load, REFRESH_MS);
+</script>
+</body>
+</html>
