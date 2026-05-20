@@ -6,10 +6,7 @@
 <title>Club RTRD — Live Rips</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f13;--surface:#1a1a22;--surface2:#22222e;--border:#2e2e3e;
-    --text:#f0f0f5;--muted:#6b6b7e;--red:#e8223a;--green:#4fff91;--blue:#2d6be4;--danger:#ff4f4f;
-  }
+  :root{--bg:#0f0f13;--surface:#1a1a22;--surface2:#22222e;--border:#2e2e3e;--text:#f0f0f5;--muted:#6b6b7e;--red:#e8223a;--green:#4fff91;--blue:#2d6be4;--danger:#ff4f4f;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
   header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
@@ -20,7 +17,7 @@
   .dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
   .dot.err{background:var(--red);}
   .container{max-width:1200px;margin:0 auto;padding:24px 20px;}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px;}
   .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
   .stat-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;}
   .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;}
@@ -31,21 +28,12 @@
   .b-inpack{background:rgba(45,107,228,.12);color:var(--blue);border:1px solid rgba(45,107,228,.3);}
   .b-sold{background:rgba(255,79,79,.12);color:var(--danger);border:1px solid rgba(255,79,79,.3);}
   .gb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:.9rem;background:rgba(232,34,58,.18);color:var(--red);border:1px solid rgba(232,34,58,.35);}
-  .section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--text);margin-bottom:18px;text-align:center;}
-  .top-hits{margin-bottom:48px;}
-  .top-hits-cards{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-end;}
-  .avail-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--text);margin-bottom:14px;}
   .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;align-items:start;}
-  .card{background:var(--surface2);border:1px solid transparent;border-radius:10px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:6px;box-sizing:border-box;min-width:0;}
-  .card-img-wrap{position:relative;width:50%;margin:0 auto;}
+  .card{background:var(--surface2);border:1px solid transparent;border-radius:10px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;position:relative;}
+  .card-img-wrap{position:relative;width:50%;margin:0 auto;min-height:40px;}
   .card-img-wrap img{width:100%;height:auto;border-radius:6px;display:block;}
-  .card-name{font-size:1.1rem;font-weight:600;color:var(--text);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .card-set{font-size:.58rem;color:var(--muted);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .card-meta{width:100%;display:flex;justify-content:space-between;align-items:center;}
-  .card-price{font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;color:var(--text);}
-  .card-badges{width:100%;display:flex;justify-content:space-between;align-items:center;}
-  .stamp{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;}
-  .stamp-inner{transform:rotate(-25deg);border:4px solid var(--red);color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:4px;padding:4px 10px;opacity:1;white-space:nowrap;text-shadow:0 0 12px rgba(232,34,58,0.8);background:rgba(0,0,0,0.15);}
+  .stamp{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:10;border-radius:10px;}
+  .stamp-inner{transform:rotate(-25deg);border:4px solid var(--red);color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;padding:4px 10px;opacity:1;text-shadow:0 0 12px rgba(232,34,58,0.8);background:rgba(0,0,0,0.15);}
   .empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.85rem;}
   .refresh-note{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);text-align:center;margin-top:32px;}
   .hl-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;user-select:none;transition:background .15s;}
@@ -53,22 +41,22 @@
   .hl-arrow{color:var(--muted);font-size:.8rem;transition:transform .2s;display:inline-block;}
   .hl-body{display:none;padding:0 20px 20px;}
   .hl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start;}
-  @media(max-width:900px){.grid,.hl-grid{grid-template-columns:repeat(3,1fr);}}
-  @media(max-width:600px){.grid,.hl-grid{grid-template-columns:repeat(2,1fr);}.top-hits-cards{gap:16px;}}
+  @media(max-width:900px){.grid,.hl-grid,.stats{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.grid,.hl-grid{grid-template-columns:repeat(2,1fr);}.stats{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 <header>
   <div>
     <div class="logo">Club RTRD</div>
-    <div class="subtitle">Live Rips — inventory updates live as repacks are sold</div>
+    <div class="subtitle">Live Rips — updates every 30 seconds</div>
   </div>
   <div class="status"><span class="dot" id="dot"></span><span id="statusTxt">Loading...</span></div>
 </header>
 <div class="container">
   <div class="stats" id="stats"></div>
-  <div class="top-hits" id="topHits"></div>
-  <div class="avail-title" id="availTitle" style="display:none;">Available Hits</div>
+  <div id="topHits" style="margin-bottom:48px;"></div>
+  <div id="availTitle" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;margin-bottom:14px;">Available Hits</div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none;">No repack cards found.</div>
   <div id="highlights" style="margin-top:48px;"></div>
@@ -76,26 +64,33 @@
 </div>
 
 <script>
-var SYNC_URL = 'https://rtrdclub.ngrok.pizza';
-var REFRESH_MS = 30000;
-var cards = [], repacks = [], invoices = [], highlights = [];
+var SYNC_URL='https://rtrdclub.ngrok.pizza';
+var REFRESH_MS=30000;
+var cards=[],repacks=[],invoices=[],highlights=[];
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function money(n){ return '$'+(+n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
+function cardDest(c){
+  var onAnyInv=invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.cardId===c.id; }); });
+  if(onAnyInv) return 'sold';
+  var rp=repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
+  if(rp){ if(rp.status==='sold') return 'sold'; return 'inpack'; }
+  return c.destination||'available';
+}
 function isCardPulled(c){
-  var rp = repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
+  var rp=repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
   if(!rp||rp.status==='sold') return false;
   return invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
 }
-function isSold(c){
-  var onPaid = invoices.some(function(inv){ return inv.status==='paid' && (inv.lineItems||[]).some(function(l){ return l.cardId===c.id; }); });
+function isSoldCard(c){
+  var onPaid=invoices.some(function(inv){ return inv.status==='paid'&&(inv.lineItems||[]).some(function(l){ return l.cardId===c.id; }); });
   if(onPaid) return true;
-  var rp = repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
-  return rp && rp.status==='sold';
+  var rp=repacks.find(function(r){ return (r.cardIds||[]).indexOf(c.id)>=0; });
+  return rp&&rp.status==='sold';
 }
-function glowColor(val, strong){
-  var o=strong?0.7:0.25, o2=strong?0.9:0.12;
+function glowColor(val,strong){
+  var o=strong?0.7:0.25,o2=strong?0.9:0.12;
   if(val>=300) return {glow:'rgba(255,200,50,'+o+')',label:'#ffc832'};
   if(val>=200) return {glow:'rgba(168,85,247,'+o+')',label:'#c084fc'};
   if(val>=125) return {glow:'rgba(59,130,246,'+o+')',label:'#60a5fa'};
@@ -116,11 +111,8 @@ function toggleHL(id){
 }
 
 function render(){
-  // Archived repack IDs from highlights
   var archivedIds={};
-  highlights.forEach(function(vol){
-    (vol.repacks||[]).forEach(function(rp){ archivedIds[rp.id]=true; });
-  });
+  highlights.forEach(function(vol){ (vol.repacks||[]).forEach(function(rp){ archivedIds[rp.id]=true; }); });
 
   var rows=[];
   repacks.forEach(function(rp){
@@ -131,87 +123,82 @@ function render(){
   });
   rows.sort(function(a,b){ return (b.card.value||0)-(a.card.value||0); });
 
-  // Active rows = not archived
-  var activeRows=rows.filter(function(r){ return !archivedIds[r.repack.id]; });
-
-  // Stats
-  var pulledRepacks=repacks.filter(function(rp){
-    return !archivedIds[rp.id]&&(rp.status==='sold'||invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); }));
+  var currentRows=rows.filter(function(r){ return !archivedIds[r.repack.id]; });
+  var currentRepacks=repacks.filter(function(rp){ return !archivedIds[rp.id]; });
+  var pulledRepacks=currentRepacks.filter(function(rp){
+    return rp.status==='sold'||invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
   }).length;
-  var activeRepackCount=repacks.filter(function(rp){ return !archivedIds[rp.id]; }).length;
-  var remainingRepacks=activeRepackCount-pulledRepacks;
-  var remainingValue=activeRows.filter(function(r){ return !isSold(r.card)&&!isCardPulled(r.card); }).reduce(function(s,r){ return s+(r.card.value||0); },0);
-  var unsoldRepacks=repacks.filter(function(rp){
-    return !archivedIds[rp.id]&&rp.status!=='sold'&&!invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
+  var remainingRepacks=currentRepacks.length-pulledRepacks;
+  var unsoldRepacks=currentRepacks.filter(function(rp){
+    return rp.status!=='sold'&&!invoices.some(function(inv){ return (inv.lineItems||[]).some(function(l){ return l.repackId===rp.id; }); });
   });
+  var remainingValue=currentRows.filter(function(r){ return !isCardPulled(r.card)&&cardDest(r.card)!=='sold'; }).reduce(function(s,r){ return s+(r.card.value||0); },0);
+  unsoldRepacks.forEach(function(rp){ remainingValue+=(rp.hiddenValue||0); });
   var avgReturn=0;
   if(unsoldRepacks.length){
     var totalUnsoldVal=unsoldRepacks.reduce(function(s,rp){
-      return s+(rp.cardIds||[]).reduce(function(sv,cid){
-        var c=cards.find(function(x){ return x.id===cid; }); return sv+(c?c.value||0:0);
-      },0);
+      var cardVal=(rp.cardIds||[]).reduce(function(sv,cid){ var c=cards.find(function(x){ return x.id===cid; }); return sv+(c?c.value||0:0); },0);
+      return s+cardVal+(rp.hiddenValue||0);
     },0);
     avgReturn=totalUnsoldVal/unsoldRepacks.length;
   }
+
   document.getElementById('stats').innerHTML=
     '<div class="stat"><div class="stat-lbl">Remaining Packs</div><div class="stat-val">'+remainingRepacks+'</div></div>'
     +'<div class="stat"><div class="stat-lbl">Remaining Value</div><div class="stat-val green">'+money(remainingValue)+'</div></div>'
     +'<div class="stat"><div class="stat-lbl">Repacks Sold</div><div class="stat-val">'+pulledRepacks+'</div></div>'
     +'<div class="stat"><div class="stat-lbl">Avg Return</div><div class="stat-val green">'+money(avgReturn)+'</div></div>';
 
-  // Top Hits — available, not archived, not pulled, not sold
-  var availRows=activeRows.filter(function(r){ return !isCardPulled(r.card)&&!isSold(r.card); });
+  // Top Hits
+  var availRows=currentRows.filter(function(r){ return !isCardPulled(r.card)&&!isSoldCard(r.card); });
   var top3=availRows.slice(0,3);
-  var topHtml='<div class="section-title">Top Hits Available</div><div class="top-hits-cards">';
-  top3.forEach(function(row){
-    var c=row.card, val=c.value||0, gc=glowColor(val,true);
-    topHtml+=
-      '<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;">'
-        +'<div style="position:relative;">'
-          +(c.imageUrl
-            ?'<img src="'+esc(c.imageUrl)+'" style="width:300px;height:auto;border-radius:10px;display:block;box-shadow:0 0 8px -10px '+gc.glow+',0 0 25px -10px '+gc.glow+',0 0 45px -10px '+gc.glow+';">'
-            :'<div style="width:300px;height:380px;background:var(--surface2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--muted);">No image</div>'
-          )
-        +'</div>'
-        +'<div style="font-size:.9rem;font-weight:600;color:var(--text);text-align:center;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.name)+(c.grade?' \u2022 PSA '+c.grade:'')+'</div>'
-        +'<div style="font-size:.92rem;font-weight:700;color:'+gc.label+';font-family:\'DM Mono\',monospace;">'+money(val)+'</div>'
-      +'</div>';
-  });
-  topHtml+='</div>';
-  document.getElementById('topHits').innerHTML=top3.length?topHtml:'';
+  var topHtml='';
+  if(top3.length){
+    topHtml='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:2px;margin-bottom:18px;text-align:center;">Top Hits Available</div>'
+      +'<div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-end;">';
+    top3.forEach(function(row){
+      var c=row.card,val=c.value||0,gc=glowColor(val,true);
+      topHtml+=
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;">'
+          +(c.imageUrl?'<img src="'+esc(c.imageUrl)+'" style="width:300px;height:auto;border-radius:10px;display:block;box-shadow:0 0 25px '+gc.glow+';">':'<div style="width:300px;height:380px;background:var(--surface2);border-radius:10px;"></div>')
+          +'<div style="font-size:.9rem;font-weight:600;text-align:center;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.name)+(c.grade?' \u2022 PSA '+c.grade:'')+'</div>'
+          +'<div style="font-size:.92rem;font-weight:700;color:'+gc.label+';font-family:\'DM Mono\',monospace;">'+money(val)+'</div>'
+        +'</div>';
+    });
+    topHtml+='</div>';
+  }
+  document.getElementById('topHits').innerHTML=topHtml;
 
-  // Main card grid — active rows only
+  // Card grid
   var grid=document.getElementById('grid');
   var availTitle=document.getElementById('availTitle');
   var empty=document.getElementById('empty');
   grid.innerHTML='';
-  availTitle.style.display=activeRows.length?'block':'none';
-  empty.style.display=activeRows.length?'none':'block';
-  activeRows.forEach(function(row){
+  availTitle.style.display=currentRows.length?'block':'none';
+  empty.style.display=currentRows.length?'none':'block';
+
+  currentRows.forEach(function(row){
     var c=row.card;
-    var sold=isSold(c);
+    var sold=isSoldCard(c);
     var pulled=!sold&&isCardPulled(c);
     var val=c.value||0;
     var gc=glowColor(val);
     var div=document.createElement('div');
     div.className='card';
     if(sold) div.style.opacity='0.4';
-    var stamp=pulled?'<div class="stamp"><div class="stamp-inner">PULLED!</div></div>':'';
     div.innerHTML=
       '<div class="card-img-wrap">'
-        +(c.imageUrl
-          ?'<img src="'+esc(c.imageUrl)+'" style="'+(sold||pulled?'filter:grayscale(1);':'box-shadow:0 0 14px 5px '+gc.glow+',0 0 28px 8px '+gc.glow+';')+'">'
-          :'<div style="width:100%;height:60px;background:var(--surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.6rem;">No image</div>'
-        )+stamp
+        +(c.imageUrl?'<img src="'+esc(c.imageUrl)+'" style="'+(sold||pulled?'filter:grayscale(1);':'box-shadow:0 0 14px 5px '+gc.glow+',0 0 28px 8px '+gc.glow+';')+'">':'<div style="width:100%;height:60px;background:var(--surface);border-radius:6px;"></div>')
+        +(pulled?'<div class="stamp"><div class="stamp-inner">PULLED!</div></div>':'')
       +'</div>'
-      +'<div class="card-badges">'
+      +'<div style="width:100%;display:flex;justify-content:space-between;align-items:center;">'
         +'<span class="badge '+(c.type==='PSA'?'b-psa':'b-ung')+'">'+esc(c.type)+'</span>'
         +gradeBadge(c)
       +'</div>'
-      +'<div class="card-name">'+esc(c.name)+'</div>'
-      +'<div class="card-set">'+esc(c.set||'')+(c.cardNum?' \u00b7 #'+esc(c.cardNum):'')+'</div>'
-      +'<div class="card-meta">'
-        +'<span class="card-price">'+money(val)+'</span>'
+      +'<div style="font-size:1.1rem;font-weight:600;text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.name)+'</div>'
+      +'<div style="font-size:.58rem;color:var(--muted);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.set||'')+(c.cardNum?' \u00b7 #'+esc(c.cardNum):'')+'</div>'
+      +'<div style="width:100%;display:flex;justify-content:space-between;align-items:center;">'
+        +'<span style="font-family:\'DM Mono\',monospace;font-size:.68rem;font-weight:700;">'+money(val)+'</span>'
         +(sold||pulled?'<span class="badge b-sold">Pulled</span>':'<span class="badge b-inpack">In Pack</span>')
       +'</div>';
     grid.appendChild(div);
@@ -221,13 +208,13 @@ function render(){
   var hlEl=document.getElementById('highlights');
   if(!highlights.length){ hlEl.innerHTML=''; return; }
   var hlHtml='<div style="border-top:1px solid var(--border);padding-top:36px;margin-top:12px;">'
-    +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--text);margin-bottom:20px;">Previous Highlights</div>';
+    +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:2px;margin-bottom:20px;">Previous Highlights</div>';
   highlights.forEach(function(vol,vi){
     var id='hl-'+vi;
     hlHtml+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;">'
       +'<div class="hl-header" onclick="toggleHL(\''+id+'\')">'
         +'<div>'
-          +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--text);">'+esc(vol.name)+'</div>'
+          +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:2px;">'+esc(vol.name)+'</div>'
           +'<div style="font-size:.68rem;color:var(--muted);font-family:\'DM Mono\',monospace;">'+esc(vol.date)+' &middot; '+(vol.repacks||[]).length+' repacks &middot; '+(vol.cards||[]).length+' cards &middot; '+money(vol.totalValue)+'</div>'
         +'</div>'
         +'<span class="hl-arrow" id="'+id+'-arrow">&#9660;</span>'
@@ -236,9 +223,7 @@ function render(){
     (vol.cards||[]).forEach(function(c){
       var gc=glowColor(c.value||0);
       hlHtml+='<div style="background:var(--surface2);border-radius:10px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;">'
-        +'<div style="width:50%;margin:0 auto;">'
-          +(c.imageUrl?'<img src="'+esc(c.imageUrl)+'" style="width:100%;height:auto;border-radius:6px;display:block;filter:grayscale(0.2);box-shadow:0 0 10px 2px '+gc.glow+';">':'<div style="width:100%;height:50px;background:var(--surface);border-radius:6px;"></div>')
-        +'</div>'
+        +'<div style="width:50%;margin:0 auto;">'+(c.imageUrl?'<img src="'+esc(c.imageUrl)+'" style="width:100%;height:auto;border-radius:6px;display:block;filter:grayscale(0.2);box-shadow:0 0 10px 2px '+gc.glow+';">':'')+'</div>'
         +'<div style="font-size:.85rem;font-weight:600;color:var(--muted);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.name)+'</div>'
         +'<div style="font-size:.55rem;color:var(--muted);text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(c.set||'')+(c.cardNum?' \u00b7 #'+esc(c.cardNum):'')+'</div>'
         +'<div style="font-family:\'DM Mono\',monospace;font-size:.65rem;font-weight:700;color:var(--muted);">'+money(c.value||0)+'</div>'
